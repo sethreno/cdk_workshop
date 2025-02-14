@@ -1,6 +1,9 @@
 import aws_cdk as cdk
 from constructs import Construct
 from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
+from aws_cdk import Stage
+
+from cdk_workshop.cdk_workshop_stack import CdkWorkshopStack
 
 
 class WorkshopPipelineStack(cdk.Stack):
@@ -26,3 +29,6 @@ class WorkshopPipelineStack(cdk.Stack):
                 ],
             ),
         )
+
+        deploy = Stage(self, "Deploy", service=CdkWorkshopStack(self, "WebService"))
+        pipeline.add_stage(deploy)
