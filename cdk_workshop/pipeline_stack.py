@@ -10,11 +10,15 @@ class WorkshopPipelineStack(cdk.Stack):
 
         pipeline = CodePipeline(
             self,
-            "Pipeline",
-            pipeline_name="MyPipeline",
+            "CdkWorkshopPipeline",
+            pipeline_name="CdkWorkshopPipeline",
             synth=ShellStep(
                 "Synth",
-                input=CodePipelineSource.git_hub("sethreno/cdk_workshop", "main"),
+                input=CodePipelineSource.connection(
+                    "sethreno/cdk_workshop",
+                    "main",
+                    connection_arn="arn:aws:codeconnections:us-east-2:463470972895:connection/f6b0e51f-786e-4186-ae47-05e6d971126e",
+                ),
                 commands=[
                     "npm install -g aws-cdk",
                     "python -m pip install -r requirements.txt",
