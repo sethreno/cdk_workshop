@@ -4,12 +4,15 @@ from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
 from aws_cdk import Stage
 
 from cdk_workshop.cdk_workshop_stack import CdkWorkshopStack
+from cdk_workshop.pipeline_stage import WorkshopPipelineStage
 
 
 class WorkshopPipelineStack(cdk.Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+
+
 
         pipeline = CodePipeline(
             self,
@@ -30,5 +33,5 @@ class WorkshopPipelineStack(cdk.Stack):
             ),
         )
 
-        deploy = Stage(self, "Deploy", service=CdkWorkshopStack(self, "WebService"))
+        deploy = WorkshopPipelineStage(self, "Deploy")
         pipeline.add_stage(deploy)
