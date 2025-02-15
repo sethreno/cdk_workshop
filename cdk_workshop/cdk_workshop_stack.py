@@ -30,11 +30,14 @@ class CdkWorkshopStack(Stack):
             self, 'Endpoint',
             handler=hello_with_counter.handler,
         )
+
         
-        TableViewer(
+        table_viewer = TableViewer(
             self, 'ViewHitCounter',
             title='Hello Hits',
             table=hello_with_counter.table,
         )
 
-
+        # expose urls for health checks
+        self.table_viewer_url = table_viewer.endpoint
+        self.hit_counter_url = gateway.url

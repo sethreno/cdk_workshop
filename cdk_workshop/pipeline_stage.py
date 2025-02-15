@@ -7,3 +7,6 @@ class WorkshopPipelineStage(Stage):
         super().__init__(scope, id, **kwargs)
 
         service = CdkWorkshopStack(self, "WebService")
+
+        self.hit_counter_url = service.hit_counter_url
+        self.table_viewer_url = service.table_viewer_url

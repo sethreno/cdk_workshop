@@ -12,8 +12,6 @@ class WorkshopPipelineStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-
-
         pipeline = CodePipeline(
             self,
             "CdkWorkshopPipeline",
@@ -35,3 +33,14 @@ class WorkshopPipelineStack(cdk.Stack):
 
         deploy = WorkshopPipelineStage(self, "Deploy")
         pipeline.add_stage(deploy)
+        pipeline.add_stage(
+            ShellStep(
+                "TestHitCounter",
+                commands=["curl -Ssf " + deploy.hit_counter_url + "/deploy/test"],
+            )
+        )
+        pipeline.add_stage(
+            ShellStep(
+                "TestTableViewer", commands=["curl -Ssf " + deploy.table_viewer_url]
+            )
+        )
