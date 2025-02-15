@@ -32,15 +32,22 @@ class WorkshopPipelineStack(cdk.Stack):
         )
 
         deploy = WorkshopPipelineStage(self, "Deploy")
-        pipeline.add_stage(deploy)
-        pipeline.add_stage(
+        deploy_stage = pipeline.add_stage(deploy)
+        deploy_stage.add_post(
             ShellStep(
                 "TestHitCounter",
-                commands=["curl -Ssf " + deploy.hit_counter_url + "/deploy/test"],
+                env_from_cfn_outputs={
+                    "HIT_COUNTER_URL": deploy.hit_counter_url,
+                },
+                commands=["curl -Ssf $ENDPOINT_URL/deploy/test"],
             )
         )
-        pipeline.add_stage(
+        deploy_stage.add_post(
             ShellStep(
-                "TestTableViewer", commands=["curl -Ssf " + deploy.table_viewer_url]
+                "TestTableViewer",
+                env_from_cfn_outputs={
+                    "TABLE_VIEWER_URL": deploy.table_viewer_url,
+                },
+                commands=["curl -Ssf $TABLE_VIEWER_URL"],
             )
         )
