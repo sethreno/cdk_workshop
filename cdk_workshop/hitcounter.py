@@ -21,7 +21,7 @@ class HitCounter(Construct):
         super().__init__(scope, id, **kwargs)
 
         self._table = ddb.Table(
-            self, 'Hits',
+            self, 'Hits2',
             partition_key={'name': 'path', 'type': ddb.AttributeType.STRING},
             removal_policy=RemovalPolicy.DESTROY
         )
