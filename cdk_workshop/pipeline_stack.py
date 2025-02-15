@@ -39,7 +39,7 @@ class WorkshopPipelineStack(cdk.Stack):
                 env_from_cfn_outputs={
                     "HIT_COUNTER_URL": deploy.hit_counter_url,
                 },
-                commands=["curl -Ssf $ENDPOINT_URL/deploy/test"],
+                commands=["curl -Ssf $HIT_COUNTER_URL/deploy/test"],
             )
         )
         deploy_stage.add_post(
